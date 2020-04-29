@@ -1,22 +1,17 @@
 package calcRA;
 
-import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
 public class RomanArabianCalc {
     static Scanner scanner = new Scanner(System.in);
-
-    static int number1, number2, number10, number20;
+    static int number1, number2;
     static char operation;
-    static int result, result2;
-
+    static int result;
     static String[] roman = {"X", "IX", "VIII", "VII", "VI", "V", "IV", "III", "II", "I"};
 
-
     public static void main (String[] args) {
-
         System.out.println("Введите выражение  [2+2=] или [V+V=] + Enter ");
 //      Считываем строку userInput которую ввёл пользователь
         String userInput = scanner.nextLine();
@@ -37,32 +32,28 @@ public class RomanArabianCalc {
             if (under_char[i] == '/') {
                 operation = '/';
             }
-
         }
-
 //        Конвертируем символьный массив в строковый массив чтобы методом split разделить на две подстроки
         String under_charString = String.valueOf(under_char);
-        String[] block01 = under_charString.split("[+-/*=]");
-        System.out.println("---Получили  две строки в массиве---");
-        System.out.println(Arrays.toString(block01));
-        System.out.println(block01[0]);
-        System.out.println(block01[1]);
-
-        number1 = romanToNumber(block01[0]);
-        number2 = romanToNumber(block01[1]);
-
-
+        String[] blacks;
+        blacks = under_charString.split("[+-/*=]");
+        System.out.println("---Получили  две строки из массиве---");
+        System.out.println(blacks[0]);
+        System.out.println(blacks[1]);
+        number1 = romanToNumber(blacks[0]);
+        number2 = romanToNumber(blacks[1]);
+        if (number1 < 0 && number2 < 0) {
+            result = 0;
+        } else {
+            result = calculated(number1, number2, operation);
+            System.out.println("---Результат для римских цифр----");
+            System.out.println(number1 + " " + operation + " " + number2 + " = " + result);
+        }
+        number1 = Integer.parseInt(blacks[0]);
+        number2 = Integer.parseInt(blacks[1]);
         result = calculated(number1, number2, operation);
-        System.out.println("---Результат для римских цифр------------------------");
+        System.out.println("--Результат для арабских цифр----");
         System.out.println(number1 + " " + operation + " " + number2 + " = " + result);
-
-
-        number10 = Integer.parseInt(block01[0]);
-        number20 = Integer.parseInt(block01[1]);
-        result2 = calculated(number10, number20, operation);
-        System.out.println("--Результат для арабских цифр------------------------");
-        System.out.println(number10 + " " + operation + " " + number20 + " = " + result2);
-
     }
 
     private static int romanToNumber (String roman) {
@@ -94,7 +85,6 @@ public class RomanArabianCalc {
         return -1;
     }
 
-
     public static int calculated (int num1, int num2, char op) {
         int result = 0;
         switch (op) {
@@ -113,6 +103,8 @@ public class RomanArabianCalc {
                 } catch (ArithmeticException | InputMismatchException e) {
                     System.out.println("Exception : " + e);
                     System.out.println("Only integer non-zero parameters allowed");
+
+                    break;
                 }
                 break;
             default:
